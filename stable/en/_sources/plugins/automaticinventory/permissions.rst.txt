@@ -1,0 +1,29 @@
+===========
+Permissions
+===========
+
+.. note::
+
+    See  :doc:`inventories` for a list of available inventory types.
+
++------------------------------------+---------------------------------------------------------+---------+
+| Permission                         | Description                                             | Default |
++====================================+=========================================================+=========+
+| automaticinventory.admin.*         | Grants all administrative privileges                    | false   |
++------------------------------------+---------------------------------------------------------+---------+
+| automaticinventory.user.*          | Grants all user privileges                              | false   |
++------------------------------------+---------------------------------------------------------+---------+
+| automaticinventory.reload          | Grants permission to reload the plugin                  | op      |
++------------------------------------+---------------------------------------------------------+---------+
+| automaticinventory.help            | Allows you to see plugin help                           | true    |
++------------------------------------+---------------------------------------------------------+---------+
+| automaticinventory.autorefill      | Grants permission to auto-refill depleted hotbar stacks | true    |
++------------------------------------+---------------------------------------------------------+---------+
+| automaticinventory.quickdeposit    | Grants permission to auto-deposit an item into a chest  | true    |
++------------------------------------+---------------------------------------------------------+---------+
+| automaticinventory.autotool        | Grants permission to auto-sort inventories              | true    |
++------------------------------------+---------------------------------------------------------+---------+
+| automaticinventory.autosort        | Grants permission to auto-sort inventories              | true    |
++------------------------------------+---------------------------------------------------------+---------+
+| automaticinventory.autosort.<type> | Grants permission to auto-sort inventory type ``<type>``| true    |
++------------------------------------+---------------------------------------------------------+---------+

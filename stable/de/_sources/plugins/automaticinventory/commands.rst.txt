@@ -1,0 +1,20 @@
+========
+Commands
+========
+
+.. note::
+
+    See  :doc:`inventories` for a list of available inventory types.
+
+===========================  ==================================  ===========================
+Usage                        Permission                            Description
+===========================  ==================================  ===========================
+/automaticinventory          None                                Shows settings menu
+/automaticinventory help     automaticinventory.help             Lists available commands
+/automaticinventory version  bukkit.command.version              Shows plugin information
+/automaticinventory reload   automaticinventory.reload           Reloads the plugin
+/autosort <type>             automaticinventory.autosort.<type>  Toggles *AutoSort*
+/quickdeposit                automaticinventory.quickdeposit     Toggles *QuickDeposit*
+/autotool                    automaticinventory.autotool         Toggles *AutoTool*
+/autorefill                  automaticinventory.autorefill       Toggles *AutoRefill*
+===========================  ==================================  ===========================

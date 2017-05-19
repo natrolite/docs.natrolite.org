@@ -1,0 +1,22 @@
+=========
+Natrolite
+=========
+
+Official Documentation of the Natrolite Bukkit Plugin.
+
+Content
+-------
+
+.. toctree::
+    :maxdepth: 2
+    :titlesonly:
+
+    plugins/index
+
+Links
+-----
+-  `Website <https://xnity.net/>`_
+-  `GitHub <https://github.com/natrolite/natrolite/>`_
+-  `GitHub Issues <https://github.com/natrolite/natrolite/issues/>`_
+-  `Spigot Resource <https://www.spigotmc.org/forums/spigot-plugin-development.52/>`_
+-  `Spigot Discussion <https://www.spigotmc.org/forums/spigot-plugin-development.52/>`_
