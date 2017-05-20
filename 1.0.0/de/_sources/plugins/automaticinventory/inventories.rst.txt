@@ -1,0 +1,57 @@
+===============
+Inventory Types
+===============
+
+.. note::
+
+    Not every inventory type is compatible with your server version.
+
++-------------+------------------------------------+
+| Type        | Information                        |
++=============+====================================+
+| CHEST       | Inventory of a Chest_              |
++-------------+------------------------------------+
+| DISPENSER   | Inventory of a Dispenser_          |
++-------------+------------------------------------+
+| DROPPER     | Inventory of a Dropper_            |
++-------------+------------------------------------+
+| FURNACE     | Inventory of a Furnace_            |
++-------------+------------------------------------+
+| WORKBENCH   | Inventory of a Workbench_          |
++-------------+------------------------------------+
+| CRAFTING    | A player's crafting inventory      |
++-------------+------------------------------------+
+| ENCHANTING  | Inventory of an Enchantment Table_ |
++-------------+------------------------------------+
+| BREWING     | Inventory of a Brewing Stand_      |
++-------------+------------------------------------+
+| PLAYER      | A player inventory                 |
++-------------+------------------------------------+
+| CREATIVE    | The creative mode inventory        |
++-------------+------------------------------------+
+| MERCHANT    | Inventory of a Villager            |
++-------------+------------------------------------+
+| ENDER_CHEST | Inventory of an EnderChest_        |
++-------------+------------------------------------+
+| ANVIL       | Inventory of an Anvil_             |
++-------------+------------------------------------+
+| BEACON      | Inventory of a Beacon_             |
++-------------+------------------------------------+
+| HOPPER      | Inventory of a Hopper_             |
++-------------+------------------------------------+
+| SHULKER_BOX | Inventory of a Shulker Box_        |
++-------------+------------------------------------+
+
+.. _Chest: http://minecraft.gamepedia.com/Chest
+.. _Dispenser: http://minecraft.gamepedia.com/Dispenser
+.. _Dropper: http://minecraft.gamepedia.com/Dropper
+.. _Furnace: http://minecraft.gamepedia.com/Furnace
+.. _Workbench: http://minecraft.gamepedia.com/Workbench
+.. _Table: http://minecraft.gamepedia.com/Enchantment_Table
+.. _Stand: http://minecraft.gamepedia.com/Brewing_Stand
+.. _Villager: http://minecraft.gamepedia.com/Villager
+.. _EnderChest: http://minecraft.gamepedia.com/Ender_Chest
+.. _Anvil: http://minecraft.gamepedia.com/Anvil
+.. _Beacon: http://minecraft.gamepedia.com/Beacon
+.. _Hopper: http://minecraft.gamepedia.com/Hopper
+.. _Box: http://minecraft.gamepedia.com/Shulker_Box

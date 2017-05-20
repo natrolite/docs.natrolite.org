@@ -1,0 +1,14 @@
+=======
+Plugins
+=======
+
+Documentation of plugins that are using Natrolite.
+
+Plugin List
+~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+
+    automaticinventory/index

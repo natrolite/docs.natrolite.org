@@ -1,0 +1,23 @@
+==================
+AutomaticInventory
+==================
+
+For a detailed information about AutomaticInventory, check out our Spigot Resource Page.
+
+Content
+-------
+
+.. toctree::
+    :maxdepth: 2
+    :titlesonly:
+
+    commands
+    permissions
+    inventories
+
+Links
+-----
+-  `GitHub <https://github.com/xnity/automatic-inventory>`_
+-  `GitHub Issues <https://github.com/xnity/automatic-inventory/issues/>`_
+-  `Spigot Resource <https://www.spigotmc.org/resources/automaticinventory.34523/>`_
+-  `Spigot Discussion <https://www.spigotmc.org/threads/automaticinventory.207571/>`_
