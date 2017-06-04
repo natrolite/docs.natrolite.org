@@ -1,0 +1,10 @@
+============
+Installation
+============
+
+The installation of AutomaticInventory is simple:
+
+  1. Download and install Natrolite
+  2. Download AutomaticInventory (`Spigot <https://www.spigotmc.org/resources/automaticinventory.34523/history>`_)
+  3. Drop 'AutomaticInventory-x.x.x.jar' into the 'plugins' directory
+  4. Start your Minecraft Server

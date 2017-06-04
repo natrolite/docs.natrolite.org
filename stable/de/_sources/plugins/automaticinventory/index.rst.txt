@@ -11,6 +11,8 @@ Content
     :maxdepth: 2
     :titlesonly:
 
+    requirements
+    installation
     commands
     permissions
     inventories

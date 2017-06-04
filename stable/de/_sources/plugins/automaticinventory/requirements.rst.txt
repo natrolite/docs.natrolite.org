@@ -1,0 +1,13 @@
+============
+Requirements
+============
+
+.. note::
+
+    Bukkit 1.8.0 is known to be broken: AutoSort will not work correctly. Use 1.8.3 to fix this issue.
+
+In order to use AutomaticInventory you need the following:
+
+    - Java 8 (or higher)
+    - Bukkit / Spigot / Paper 1.8 - 1.112
+    - Natrolite 1.0.5 (or higher)
