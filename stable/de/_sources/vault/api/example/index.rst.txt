@@ -1,0 +1,30 @@
+==============
+Example Plugin
+==============
+
+.. code-block:: java
+
+    import java.util.logging.Level;
+    import net.milkbowl.vault.economy.Economy;
+    import org.bukkit.plugin.RegisteredServiceProvider;
+    import org.bukkit.plugin.java.JavaPlugin;
+
+    public class ExamplePlugin extends JavaPlugin {
+
+      @Override
+      public void onEnable() {
+        if(getEconomy() == null) {
+          getLogger().log(Level.SEVERE, "You need an Economy Plugin in order to use this plugin!");
+          setEnabled(false);
+        }
+      }
+
+      public Economy getEconomy() {
+        RegisteredServiceProvider<Economy> economy = getServer().getServicesManager().getRegistration(Economy.class);
+        if (economy == null) {
+          //No Economy Service is registered!
+          return null;
+        }
+        return economy.getProvider();
+      }
+    }

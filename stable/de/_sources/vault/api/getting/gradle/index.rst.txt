@@ -1,0 +1,19 @@
+======
+Gradle
+======
+
+To add VaultAPI to your project, add this to your build.gradle:
+
+.. code-block:: groovy
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'vault-repo'
+            url = 'http://nexus.hc.to/content/repositories/pub_releases'
+        }
+    }
+
+    dependencies {
+        compileOnly group: 'net.milkbowl.vault', name: 'VaultAPI', version: '1.6'
+    }
