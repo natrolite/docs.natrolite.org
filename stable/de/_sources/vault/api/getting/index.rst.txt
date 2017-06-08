@@ -1,5 +1,5 @@
 ================
-Getting the Code
+Include VaultAPI
 ================
 
 To use the Vault API you have to include it to your project first.

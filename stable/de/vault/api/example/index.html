@@ -68,7 +68,7 @@
                 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Vault</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Die API benutzen</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../getting/index.html">An den Code kommen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting/index.html">VaultAPI hinzufügen</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Beispiel Plugin</a></li>
 </ul>
 </li>
@@ -109,29 +109,110 @@
            <div itemprop="articleBody">
   <div class="section" id="example-plugin">
 <h1>Beispiel Plugin<a class="headerlink" href="#example-plugin" title="Link zu dieser Überschrift">¶</a></h1>
-<div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">java.util.logging.Level</span><span class="o">;</span>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">com.example.plugin</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">net.milkbowl.vault.chat.Chat</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">net.milkbowl.vault.economy.Economy</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">net.milkbowl.vault.economy.EconomyResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">net.milkbowl.vault.permission.Permission</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.bukkit.command.Command</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.bukkit.command.CommandSender</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.bukkit.entity.Player</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.bukkit.plugin.RegisteredServiceProvider</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.bukkit.plugin.java.JavaPlugin</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExamplePlugin</span> <span class="kd">extends</span> <span class="n">JavaPlugin</span> <span class="o">{</span>
 
-  <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onEnable</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">getEconomy</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-      <span class="n">getLogger</span><span class="o">().</span><span class="na">log</span><span class="o">(</span><span class="n">Level</span><span class="o">.</span><span class="na">SEVERE</span><span class="o">,</span> <span class="s">&quot;You need an Economy Plugin in order to use this plugin!&quot;</span><span class="o">);</span>
-      <span class="n">setEnabled</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">&quot;Minecraft&quot;</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Economy</span> <span class="n">econ</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Permission</span> <span class="n">perms</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Chat</span> <span class="n">chat</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
 
-  <span class="kd">public</span> <span class="n">Economy</span> <span class="nf">getEconomy</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">RegisteredServiceProvider</span><span class="o">&lt;</span><span class="n">Economy</span><span class="o">&gt;</span> <span class="n">economy</span> <span class="o">=</span> <span class="n">getServer</span><span class="o">().</span><span class="na">getServicesManager</span><span class="o">().</span><span class="na">getRegistration</span><span class="o">(</span><span class="n">Economy</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">economy</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-      <span class="c1">//No Economy Service is registered!</span>
-      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onDisable</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;[%s] Disabled Version %s&quot;</span><span class="o">,</span> <span class="n">getDescription</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">getDescription</span><span class="o">().</span><span class="na">getVersion</span><span class="o">()));</span>
     <span class="o">}</span>
-    <span class="k">return</span> <span class="n">economy</span><span class="o">.</span><span class="na">getProvider</span><span class="o">();</span>
-  <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onEnable</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">setupEconomy</span><span class="o">()</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;[%s] - Disabled due to no Vault dependency found!&quot;</span><span class="o">,</span> <span class="n">getDescription</span><span class="o">().</span><span class="na">getName</span><span class="o">()));</span>
+            <span class="n">getServer</span><span class="o">().</span><span class="na">getPluginManager</span><span class="o">().</span><span class="na">disablePlugin</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">setupPermission</span><span class="o">();</span>
+        <span class="n">setupChat</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">setupEconomy</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">getServer</span><span class="o">().</span><span class="na">getPluginManager</span><span class="o">().</span><span class="na">getPlugin</span><span class="o">(</span><span class="s">&quot;Vault&quot;</span><span class="o">)</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">RegisteredServiceProvider</span><span class="o">&lt;</span><span class="n">Economy</span><span class="o">&gt;</span> <span class="n">rsp</span> <span class="o">=</span> <span class="n">getServer</span><span class="o">().</span><span class="na">getServicesManager</span><span class="o">().</span><span class="na">getRegistration</span><span class="o">(</span><span class="n">Economy</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">rsp</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">econ</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="na">getProvider</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">econ</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">setupChat</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">RegisteredServiceProvider</span><span class="o">&lt;</span><span class="n">Chat</span><span class="o">&gt;</span> <span class="n">rsp</span> <span class="o">=</span> <span class="n">getServer</span><span class="o">().</span><span class="na">getServicesManager</span><span class="o">().</span><span class="na">getRegistration</span><span class="o">(</span><span class="n">Chat</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">chat</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="na">getProvider</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">chat</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">setupPermission</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">RegisteredServiceProvider</span><span class="o">&lt;</span><span class="n">Permission</span><span class="o">&gt;</span> <span class="n">rsp</span> <span class="o">=</span> <span class="n">getServer</span><span class="o">().</span><span class="na">getServicesManager</span><span class="o">().</span><span class="na">getRegistration</span><span class="o">(</span><span class="n">Permission</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">perms</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="na">getProvider</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">perms</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onCommand</span><span class="o">(</span><span class="n">CommandSender</span> <span class="n">sender</span><span class="o">,</span> <span class="n">Command</span> <span class="n">command</span><span class="o">,</span> <span class="n">String</span> <span class="n">commandLabel</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(!(</span><span class="n">sender</span> <span class="k">instanceof</span> <span class="n">Player</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Only players are supported for this Example Plugin, but you should not do this!!!&quot;</span><span class="o">);</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">Player</span> <span class="n">player</span> <span class="o">=</span> <span class="o">(</span><span class="n">Player</span><span class="o">)</span> <span class="n">sender</span><span class="o">;</span>
+
+        <span class="k">if</span><span class="o">(</span><span class="n">command</span><span class="o">.</span><span class="na">getLabel</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;test-economy&quot;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="c1">// Lets give the player 1.05 currency (note that SOME economic plugins require rounding!)</span>
+            <span class="n">sender</span><span class="o">.</span><span class="na">sendMessage</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;You have %s&quot;</span><span class="o">,</span> <span class="n">econ</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">econ</span><span class="o">.</span><span class="na">getBalance</span><span class="o">(</span><span class="n">player</span><span class="o">.</span><span class="na">getName</span><span class="o">()))));</span>
+            <span class="n">EconomyResponse</span> <span class="n">r</span> <span class="o">=</span> <span class="n">econ</span><span class="o">.</span><span class="na">depositPlayer</span><span class="o">(</span><span class="n">player</span><span class="o">,</span> <span class="mf">1.05</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">transactionSuccess</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">sender</span><span class="o">.</span><span class="na">sendMessage</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;You were given %s and now have %s&quot;</span><span class="o">,</span> <span class="n">econ</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">amount</span><span class="o">),</span> <span class="n">econ</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">balance</span><span class="o">)));</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">sender</span><span class="o">.</span><span class="na">sendMessage</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;An error occured: %s&quot;</span><span class="o">,</span> <span class="n">r</span><span class="o">.</span><span class="na">errorMessage</span><span class="o">));</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">command</span><span class="o">.</span><span class="na">getLabel</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;test-permission&quot;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="c1">// Lets test if user has the node &quot;example.plugin.awesome&quot; to determine if they are awesome or just suck</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">perms</span><span class="o">.</span><span class="na">has</span><span class="o">(</span><span class="n">player</span><span class="o">,</span> <span class="s">&quot;example.plugin.awesome&quot;</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">sender</span><span class="o">.</span><span class="na">sendMessage</span><span class="o">(</span><span class="s">&quot;You are awesome!&quot;</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">sender</span><span class="o">.</span><span class="na">sendMessage</span><span class="o">(</span><span class="s">&quot;You suck!&quot;</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Economy</span> <span class="nf">getEconomy</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">econ</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Permission</span> <span class="nf">getPermission</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">perms</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Chat</span> <span class="nf">getChat</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">chat</span><span class="o">;</span>
+    <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
